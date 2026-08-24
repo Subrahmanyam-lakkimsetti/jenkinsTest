@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    stages {
+        stage("check out source code") {
+            steps {
+                git branch: 'master',
+                url: 'https://github.com/Subrahmanyam-lakkimsetti/jenkinsTest'
+            }
+        }
+        
+        stage("build & test") {
+            steps {
+                withMaven(maven: 'maven3.9.9'){
+                    sh 'mvn clean package'
+                }
+            }
+        }    
+        
+        stage("public URL") {
+            steps {
+                echo "Application URL: http://localhost:8081"
+            }
+        }
+        
+        stage("Run Application") {
+            steps {
+                echo "artifact build success, application running"
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo "pipeline executed successfully"
+        }
+        
+        failure {
+            echo "pipeline failed to execute"
+        }
+    }
+}
