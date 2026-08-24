@@ -15,7 +15,7 @@ pipeline {
             }
         }  
         
-        // sonar qube quality check 
+        // sonar qube quality check analysis
         stage("static code analysis SonarQue") {
 			steps {
 				withMaven(maven: 'maven3.9.9') {
