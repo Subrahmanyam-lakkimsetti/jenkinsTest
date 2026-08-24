@@ -19,7 +19,7 @@ pipeline {
         stage("static code analysis SonarQue") {
 			steps {
 				withMaven(maven: 'maven3.9.9') {
-					sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.token=$SONAR_TOKEN -Dsonar.scanner.skipJreProvisioning=false'
+					sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.token=$SONAR_TOKEN'
 				}
 			}
 		}  
