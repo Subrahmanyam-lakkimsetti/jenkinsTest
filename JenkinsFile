@@ -1,12 +1,11 @@
 pipeline {
     agent any
+    
+    environement {
+		SONAR_TOKEN = credentials('sonar-token')
+	}
+	
     stages {
-        stage("check out source code") {
-            steps {
-                git branch: 'master',
-                url: 'https://github.com/Subrahmanyam-lakkimsetti/jenkinsTest'
-            }
-        }
         
         stage("build & test") {
             steps {
@@ -14,7 +13,16 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
-        }    
+        }  
+        
+        // sonar qube quality check 
+        stage("static code analysis SonarQue") {
+			steps {
+				withMaven(maven: 'maven3.9.9') {
+					sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.token=$SONAR_TOKEN'
+				}
+			}
+		}  
         
         stage("public URL") {
             steps {
@@ -22,9 +30,10 @@ pipeline {
             }
         }
         
-        stage("Run Application") {
+        stage("Deploy") {
             steps {
-                echo "artifact build success, application running"
+                echo "Deploying application"
+                echo "Deployement successful (mockeed)"
             }
         }
     }
